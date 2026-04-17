@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="zh-Hans" dir="ltr" class="docs-wrapper plugin-docs plugin-id-default docs-version-current docs-doc-page docs-doc-id-developer-guide/adding-providers" data-has-hydrated="false">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="Docusaurus v3.9.2">
+<title data-rh="true">添加提供商 | Hermes Agent</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:image" content="https://hermes-agent.nousresearch.com/docs/zh-Hans/img/hermes-agent-banner.png"><meta data-rh="true" name="twitter:image" content="https://hermes-agent.nousresearch.com/docs/zh-Hans/img/hermes-agent-banner.png"><meta data-rh="true" property="og:url" content="https://hermes-agent.nousresearch.com/docs/zh-Hans/developer-guide/adding-providers"><meta data-rh="true" property="og:locale" content="zh_Hans"><meta data-rh="true" property="og:locale:alternate" content="en"><meta data-rh="true" name="docusaurus_locale" content="zh-Hans"><meta data-rh="true" name="docsearch:language" content="zh-Hans"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="添加提供商 | Hermes Agent"><meta data-rh="true" name="description" content="如何向 Hermes Agent 添加新的推理提供商 — 认证、运行时解析、CLI 流程、适配器、测试和文档"><meta data-rh="true" property="og:description" content="如何向 Hermes Agent 添加新的推理提供商 — 认证、运行时解析、CLI 流程、适配器、测试和文档"><link data-rh="true" rel="icon" href="/docs/zh-Hans/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://hermes-agent.nousresearch.com/docs/zh-Hans/developer-guide/adding-providers"><link data-rh="true" rel="alternate" href="https://hermes-agent.nousresearch.com/docs/developer-guide/adding-providers" hreflang="en"><link data-rh="true" rel="alternate" href="https://hermes-agent.nousresearch.com/docs/zh-Hans/developer-guide/adding-providers" hreflang="zh-Hans"><link data-rh="true" rel="alternate" href="https://hermes-agent.nousresearch.com/docs/developer-guide/adding-providers" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"添加提供商","item":"https://hermes-agent.nousresearch.com/docs/zh-Hans/developer-guide/adding-providers"}]}</script><link rel="stylesheet" href="/docs/zh-Hans/assets/css/styles.31ad23ea.css">
+<script src="/docs/zh-Hans/assets/js/runtime~main.16863569.js" defer="defer"></script>
+<script src="/docs/zh-Hans/assets/js/main.5a34b6b0.js" defer="defer"></script>
+</head>
+<body class="navigation-with-keyboard">
+<svg style="display: none;"><defs>
+<symbol id="theme-svg-external-link" viewBox="0 0 24 24"><path fill="currentColor" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></symbol>
+</defs></svg>
+<script>!function(){var t=function(){try{return new URLSearchParams(window.location.search).get("docusaurus-theme")}catch(t){}}()||function(){try{return window.localStorage.getItem("theme")}catch(t){}}();document.documentElement.setAttribute("data-theme",t||(window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light")),document.documentElement.setAttribute("data-theme-choice",t||"system")}(),function(){try{const c=new URLSearchParams(window.location.search).entries();for(var[t,e]of c)if(t.startsWith("docusaurus-data-")){var a=t.replace("docusaurus-data-","data-");document.documentElement.setAttribute(a,e)}}catch(t){}}()</script><div id="__docusaurus"><link rel="preload" as="image" href="/docs/zh-Hans/img/logo.png"><div role="region" aria-label="跳到主要内容"><a class="skipToContent_fXgn" href="#__docusaurus_skipToContent_fallback">跳到主要内容</a></div><nav aria-label="主导航" class="theme-layout-navbar navbar navbar--fixed-top"><div class="navbar__inner"><div class="theme-layout-navbar-left navbar__items"><button aria-label="切换导航栏" aria-expanded="false" class="navbar__toggle clean-btn" type="button"><svg width="30" height="30" viewBox="0 0 30 30" aria-hidden="true"><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" d="M4 7h22M4 15h22M4 23h22"></path></svg></button><a class="navbar__brand" href="/docs/zh-Hans/"><div class="navbar__logo"><img src="/docs/zh-Hans/img/logo.png" alt="Hermes Agent" class="themedComponent_mlkZ themedComponent--light_NVdE"><img src="/docs/zh-Hans/img/logo.png" alt="Hermes Agent" class="themedComponent_mlkZ themedComponent--dark_xIcU"></div><b class="navbar__title text--truncate">Hermes Agent</b></a><a aria-current="page" class="navbar__item navbar__link navbar__link--active" href="/docs/zh-Hans/getting-started/quickstart">文档</a><a class="navbar__item navbar__link" href="/docs/zh-Hans/skills">技能</a></div><div class="theme-layout-navbar-right navbar__items navbar__items--right"><a href="https://hermes-agent.nousresearch.com" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">首页<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><a href="https://discord.gg/NousResearch" target="_blank" rel="noopener noreferrer" class="navbar__item navbar__link">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a><div class="navbar__item dropdown dropdown--hoverable dropdown--right"><a href="#" aria-haspopup="true" aria-expanded="false" role="button" class="navbar__link"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" class="iconLanguage_nlXk"><path fill="currentColor" d="M12.87 15.07l-2.54-2.51.03-.03c1.74-1.94 2.98-4.17 3.71-6.53H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"></path></svg>简体中文</a><ul class="dropdown__menu"><li><a href="/docs/developer-guide/adding-providers" target="_self" rel="noopener noreferrer" class="dropdown__link" lang="en">English</a></li><li><a href="/docs/zh-Hans/developer-guide/adding-providers" target="_self" rel="noopener noreferrer" class="dropdown__link dropdown__link--active" lang="zh-Hans">简体中文</a></li></ul></div><div class="toggle_vylO colorModeToggle_DEke"><button class="clean-btn toggleButton_gllP toggleButtonDisabled_aARS" type="button" disabled="" title="system mode" aria-label="切换浅色/暗黑模式（当前为system mode）"><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP lightToggleIcon_pyhR"><path fill="currentColor" d="M12,9c1.65,0,3,1.35,3,3s-1.35,3-3,3s-3-1.35-3-3S10.35,9,12,9 M12,7c-2.76,0-5,2.24-5,5s2.24,5,5,5s5-2.24,5-5 S14.76,7,12,7L12,7z M2,13l2,0c0.55,0,1-0.45,1-1s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S1.45,13,2,13z M20,13l2,0c0.55,0,1-0.45,1-1 s-0.45-1-1-1l-2,0c-0.55,0-1,0.45-1,1S19.45,13,20,13z M11,2v2c0,0.55,0.45,1,1,1s1-0.45,1-1V2c0-0.55-0.45-1-1-1S11,1.45,11,2z M11,20v2c0,0.55,0.45,1,1,1s1-0.45,1-1v-2c0-0.55-0.45-1-1-1C11.45,19,11,19.45,11,20z M5.99,4.58c-0.39-0.39-1.03-0.39-1.41,0 c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0s0.39-1.03,0-1.41L5.99,4.58z M18.36,16.95 c-0.39-0.39-1.03-0.39-1.41,0c-0.39,0.39-0.39,1.03,0,1.41l1.06,1.06c0.39,0.39,1.03,0.39,1.41,0c0.39-0.39,0.39-1.03,0-1.41 L18.36,16.95z M19.42,5.99c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06c-0.39,0.39-0.39,1.03,0,1.41 s1.03,0.39,1.41,0L19.42,5.99z M7.05,18.36c0.39-0.39,0.39-1.03,0-1.41c-0.39-0.39-1.03-0.39-1.41,0l-1.06,1.06 c-0.39,0.39-0.39,1.03,0,1.41s1.03,0.39,1.41,0L7.05,18.36z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP darkToggleIcon_wfgR"><path fill="currentColor" d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"></path></svg><svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" class="toggleIcon_g3eP systemToggleIcon_QzmC"><path fill="currentColor" d="m12 21c4.971 0 9-4.029 9-9s-4.029-9-9-9-9 4.029-9 9 4.029 9 9 9zm4.95-13.95c1.313 1.313 2.05 3.093 2.05 4.95s-0.738 3.637-2.05 4.95c-1.313 1.313-3.093 2.05-4.95 2.05v-14c1.857 0 3.637 0.737 4.95 2.05z"></path></svg></button></div><div class="navbarSearchContainer_Bca1"><div class="navbar__search searchBarContainer_NW3z" dir="ltr"><input placeholder="搜索" aria-label="Search" class="navbar__search-input searchInput_YFbd" value=""><div class="loadingRing_RJI3 searchBarLoadingRing_YnHq"><div></div><div></div><div></div><div></div></div></div></div></div></div><div role="presentation" class="navbar-sidebar__backdrop"></div></nav><div id="__docusaurus_skipToContent_fallback" class="theme-layout-main main-wrapper mainWrapper_z2l0"><div class="docsWrapper_hBAB"><button aria-label="回到顶部" class="clean-btn theme-back-to-top-button backToTopButton_sjWU" type="button"></button><div class="docRoot_UBD9"><aside class="theme-doc-sidebar-container docSidebarContainer_YfHR"><div class="sidebarViewport_aRkj"><div class="sidebar_njMd"><nav aria-label="文档侧边栏" class="menu thin-scrollbar menu_SIkG"><ul class="theme-doc-sidebar-menu menu__list"><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/docs/zh-Hans/getting-started/quickstart"><span title="开始使用" class="categoryLinkLabel_W154">开始使用</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/docs/zh-Hans/user-guide/cli"><span title="使用Hermes" class="categoryLinkLabel_W154">使用Hermes</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/docs/zh-Hans/user-guide/features/overview"><span title="功能特性" class="categoryLinkLabel_W154">功能特性</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/docs/zh-Hans/user-guide/messaging/"><span title="消息平台" class="categoryLinkLabel_W154">消息平台</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/docs/zh-Hans/integrations/"><span title="集成" class="categoryLinkLabel_W154">集成</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/docs/zh-Hans/guides/tips"><span title="指南与教程" class="categoryLinkLabel_W154">指南与教程</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" href="/docs/zh-Hans/developer-guide/contributing"><span title="开发者指南" class="categoryLinkLabel_W154">开发者指南</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-2 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/zh-Hans/developer-guide/contributing"><span title="贡献指南" class="linkLabel_WmDU">贡献指南</span></a></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/docs/zh-Hans/developer-guide/architecture"><span title="架构" class="categoryLinkLabel_W154">架构</span></a></div></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret menu__link--active" role="button" aria-expanded="true" tabindex="0" href="/docs/zh-Hans/developer-guide/adding-tools"><span title="扩展" class="categoryLinkLabel_W154">扩展</span></a></div><ul class="menu__list"><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/zh-Hans/developer-guide/adding-tools"><span title="添加工具" class="linkLabel_WmDU">添加工具</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link menu__link--active" aria-current="page" tabindex="0" href="/docs/zh-Hans/developer-guide/adding-providers"><span title="添加提供商" class="linkLabel_WmDU">添加提供商</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/zh-Hans/developer-guide/adding-platform-adapters"><span title="添加平台适配器" class="linkLabel_WmDU">添加平台适配器</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/zh-Hans/developer-guide/memory-provider-plugin"><span title="记忆提供商插件" class="linkLabel_WmDU">记忆提供商插件</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/zh-Hans/developer-guide/context-engine-plugin"><span title="上下文引擎插件" class="linkLabel_WmDU">上下文引擎插件</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/zh-Hans/developer-guide/creating-skills"><span title="创建技能" class="linkLabel_WmDU">创建技能</span></a></li><li class="theme-doc-sidebar-item-link theme-doc-sidebar-item-link-level-3 menu__list-item"><a class="menu__link" tabindex="0" href="/docs/zh-Hans/developer-guide/extending-the-cli"><span title="扩展 CLI" class="linkLabel_WmDU">扩展 CLI</span></a></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-2 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" tabindex="0" href="/docs/zh-Hans/developer-guide/tools-runtime"><span title="内部机制" class="categoryLinkLabel_W154">内部机制</span></a></div></li></ul></li><li class="theme-doc-sidebar-item-category theme-doc-sidebar-item-category-level-1 menu__list-item menu__list-item--collapsed"><div class="menu__list-item-collapsible"><a class="categoryLink_byQd menu__link menu__link--sublist menu__link--sublist-caret" role="button" aria-expanded="false" href="/docs/zh-Hans/reference/cli-commands"><span title="参考" class="categoryLinkLabel_W154">参考</span></a></div></li></ul></nav><button type="button" title="收起侧边栏" aria-label="收起侧边栏" class="button button--secondary button--outline collapseSidebarButton_PEFL"><svg width="20" height="20" aria-hidden="true" class="collapseSidebarButtonIcon_kv0_"><g fill="#7a7a7a"><path d="M9.992 10.023c0 .2-.062.399-.172.547l-4.996 7.492a.982.982 0 01-.828.454H1c-.55 0-1-.453-1-1 0-.2.059-.403.168-.551l4.629-6.942L.168 3.078A.939.939 0 010 2.528c0-.548.45-.997 1-.997h2.996c.352 0 .649.18.828.45L9.82 9.472c.11.148.172.347.172.55zm0 0"></path><path d="M19.98 10.023c0 .2-.058.399-.168.547l-4.996 7.492a.987.987 0 01-.828.454h-3c-.547 0-.996-.453-.996-1 0-.2.059-.403.168-.551l4.625-6.942-4.625-6.945a.939.939 0 01-.168-.55 1 1 0 01.996-.997h3c.348 0 .649.18.828.45l4.996 7.492c.11.148.168.347.168.55zm0 0"></path></g></svg></button></div></div></aside><main class="docMainContainer_TBSr"><div class="container padding-top--md padding-bottom--lg"><div class="row"><div class="col docItemCol_VOVn"><div class="docItemContainer_Djhp"><article><nav class="theme-doc-breadcrumbs breadcrumbsContainer_Z_bl" aria-label="页面路径"><ul class="breadcrumbs"><li class="breadcrumbs__item"><a aria-label="主页面" class="breadcrumbs__link" href="/docs/zh-Hans/"><svg viewBox="0 0 24 24" class="breadcrumbHomeIcon_YNFT"><path d="M10 19v-5h4v5c0 .55.45 1 1 1h3c.55 0 1-.45 1-1v-7h1.7c.46 0 .68-.57.33-.87L12.67 3.6c-.38-.34-.96-.34-1.34 0l-8.36 7.53c-.34.3-.13.87.33.87H5v7c0 .55.45 1 1 1h3c.55 0 1-.45 1-1z" fill="currentColor"></path></svg></a></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">开发者指南</span></li><li class="breadcrumbs__item"><span class="breadcrumbs__link">扩展</span></li><li class="breadcrumbs__item breadcrumbs__item--active"><span class="breadcrumbs__link">添加提供商</span></li></ul></nav><div class="tocCollapsible_ETCw theme-doc-toc-mobile tocMobile_ITEo"><button type="button" class="clean-btn tocCollapsibleButton_TO0P">本页总览</button></div><div class="theme-doc-markdown markdown"><header><h1>添加提供商</h1></header>
+<p>Hermes 已经可以通过自定义提供商路径与任何 OpenAI 兼容的端点通信。除非您希望为该服务提供一流的用户体验，否则不要添加内置提供商：</p>
+<ul>
+<li class="">特定于提供商的认证或令牌刷新</li>
+<li class="">精选的模型目录</li>
+<li class="">设置 / <code>hermes model</code> 菜单条目</li>
+<li class=""><code>provider:model</code> 语法的提供商别名</li>
+<li class="">需要适配器的非 OpenAI API 形状</li>
+</ul>
+<p>如果提供商只是&quot;另一个 OpenAI 兼容的基础 URL 和 API 密钥&quot;，命名自定义提供商可能就足够了。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="心智模型">心智模型<a href="#心智模型" class="hash-link" aria-label="心智模型的直接链接" title="心智模型的直接链接" translate="no">​</a></h2>
+<p>内置提供商必须在几个层级上对齐：</p>
+<ol>
+<li class=""><code>hermes_cli/auth.py</code> 决定如何找到凭据。</li>
+<li class=""><code>hermes_cli/runtime_provider.py</code> 将其转换为运行时数据：<!-- -->
+<ul>
+<li class=""><code>provider</code></li>
+<li class=""><code>api_mode</code></li>
+<li class=""><code>base_url</code></li>
+<li class=""><code>api_key</code></li>
+<li class=""><code>source</code></li>
+</ul>
+</li>
+<li class=""><code>run_agent.py</code> 使用 <code>api_mode</code> 决定如何构建和发送请求。</li>
+<li class=""><code>hermes_cli/models.py</code> 和 <code>hermes_cli/main.py</code> 使提供商显示在 CLI 中。（<code>hermes_cli/setup.py</code> 自动委托给 <code>main.py</code> — 无需在那里进行更改。）</li>
+<li class=""><code>agent/auxiliary_client.py</code> 和 <code>agent/model_metadata.py</code> 保持辅助任务和令牌预算工作正常。</li>
+</ol>
+<p>重要的抽象是 <code>api_mode</code>。</p>
+<ul>
+<li class="">大多数提供商使用 <code>chat_completions</code>。</li>
+<li class="">Codex 使用 <code>codex_responses</code>。</li>
+<li class="">Anthropic 使用 <code>anthropic_messages</code>。</li>
+<li class="">新的非 OpenAI 协议通常意味着添加新的适配器和新的 <code>api_mode</code> 分支。</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="首先选择实现路径">首先选择实现路径<a href="#首先选择实现路径" class="hash-link" aria-label="首先选择实现路径的直接链接" title="首先选择实现路径的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="路径-a--openai-兼容提供商">路径 A — OpenAI 兼容提供商<a href="#路径-a--openai-兼容提供商" class="hash-link" aria-label="路径 A — OpenAI 兼容提供商的直接链接" title="路径 A — OpenAI 兼容提供商的直接链接" translate="no">​</a></h3>
+<p>当提供商接受标准聊天完成样式请求时使用此路径。</p>
+<p>典型工作：</p>
+<ul>
+<li class="">添加认证元数据</li>
+<li class="">添加模型目录 / 别名</li>
+<li class="">add runtime resolution</li>
+<li class="">add CLI menu wiring</li>
+<li class="">add aux-model defaults</li>
+<li class="">add tests and user docs</li>
+</ul>
+<p>You usually do not need a new adapter or a new <code>api_mode</code>.</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="path-b--native-provider">Path B — Native provider<a href="#path-b--native-provider" class="hash-link" aria-label="Path B — Native provider的直接链接" title="Path B — Native provider的直接链接" translate="no">​</a></h3>
+<p>Use this when the provider does not behave like OpenAI chat completions.</p>
+<p>Examples in-tree today:</p>
+<ul>
+<li class=""><code>codex_responses</code></li>
+<li class=""><code>anthropic_messages</code></li>
+</ul>
+<p>This path includes everything from Path A plus:</p>
+<ul>
+<li class="">a provider adapter in <code>agent/</code></li>
+<li class=""><code>run_agent.py</code> 分支用于请求构建、分发、使用量提取、interrupt 处理和响应规范化</li>
+<li class="">适配器测试</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="文件检查清单">文件检查清单<a href="#文件检查清单" class="hash-link" aria-label="文件检查清单的直接链接" title="文件检查清单的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="每个内置提供商都需要">每个内置提供商都需要<a href="#每个内置提供商都需要" class="hash-link" aria-label="每个内置提供商都需要的直接链接" title="每个内置提供商都需要的直接链接" translate="no">​</a></h3>
+<ol>
+<li class=""><code>hermes_cli/auth.py</code></li>
+<li class=""><code>hermes_cli/models.py</code></li>
+<li class=""><code>hermes_cli/runtime_provider.py</code></li>
+<li class=""><code>hermes_cli/main.py</code></li>
+<li class=""><code>agent/auxiliary_client.py</code></li>
+<li class=""><code>agent/model_metadata.py</code></li>
+<li class="">测试</li>
+<li class=""><code>website/docs/</code> 下的用户面向文档</li>
+</ol>
+<div class="theme-admonition theme-admonition-tip admonition_xJq3 alert alert--success"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 12 16"><path fill-rule="evenodd" d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"></path></svg></span>提示</div><div class="admonitionContent_BuS1"><p><code>hermes_cli/setup.py</code> <strong>不需要</strong>更改。设置向导将提供商/模型选择委托给 <code>main.py</code> 中的 <code>select_provider_and_model()</code> — 任何添加到此处的提供商都会自动在 <code>hermes setup</code> 中可用。</p></div></div>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="额外的原生非-openai-提供商">额外的原生/非 OpenAI 提供商<a href="#额外的原生非-openai-提供商" class="hash-link" aria-label="额外的原生/非 OpenAI 提供商的直接链接" title="额外的原生/非 OpenAI 提供商的直接链接" translate="no">​</a></h3>
+<ol start="10">
+<li class=""><code>agent/&lt;provider&gt;_adapter.py</code></li>
+<li class=""><code>run_agent.py</code></li>
+<li class="">如果需要提供商 SDK，则需要 <code>pyproject.toml</code></li>
+</ol>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="步骤-1选择一个规范的提供商-id">步骤 1：选择一个规范的提供商 ID<a href="#步骤-1选择一个规范的提供商-id" class="hash-link" aria-label="步骤 1：选择一个规范的提供商 ID的直接链接" title="步骤 1：选择一个规范的提供商 ID的直接链接" translate="no">​</a></h2>
+<p>选择一个提供商 ID 并在各处使用它。</p>
+<p>仓库中的示例：</p>
+<ul>
+<li class=""><code>openai-codex</code></li>
+<li class=""><code>kimi-coding</code></li>
+<li class=""><code>minimax-cn</code></li>
+</ul>
+<p>相同的 ID 应该出现在：</p>
+<ul>
+<li class=""><code>hermes_cli/auth.py</code> 中的 <code>PROVIDER_REGISTRY</code></li>
+<li class=""><code>hermes_cli/models.py</code> 中的 <code>_PROVIDER_LABELS</code></li>
+<li class=""><code>hermes_cli/auth.py</code> 和 <code>hermes_cli/models.py</code> 中的 <code>_PROVIDER_ALIASES</code></li>
+<li class=""><code>hermes_cli/main.py</code> 中的 CLI <code>--provider</code> 选项</li>
+<li class="">设置/模型选择分支</li>
+<li class="">辅助模型默认值</li>
+<li class="">测试</li>
+</ul>
+<p>如果这些文件中的 ID 不同，提供商会感觉像是半接线：身份验证可能有效，而 <code>/model</code>、设置或运行时解析会静默失败。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="步骤-2在-hermes_cliauthpy-中添加认证元数据">步骤 2：在 <code>hermes_cli/auth.py</code> 中添加认证元数据<a href="#步骤-2在-hermes_cliauthpy-中添加认证元数据" class="hash-link" aria-label="步骤-2在-hermes_cliauthpy-中添加认证元数据的直接链接" title="步骤-2在-hermes_cliauthpy-中添加认证元数据的直接链接" translate="no">​</a></h2>
+<p>对于 API 密钥提供商，在 <code>PROVIDER_REGISTRY</code> 中添加一个 <code>ProviderConfig</code> 条目，包含：</p>
+<ul>
+<li class=""><code>id</code></li>
+<li class=""><code>name</code></li>
+<li class=""><code>auth_type=&quot;api_key&quot;</code></li>
+<li class=""><code>inference_base_url</code></li>
+<li class=""><code>api_key_env_vars</code></li>
+<li class="">可选的 <code>base_url_env_var</code></li>
+</ul>
+<p>还将别名添加到 <code>_PROVIDER_ALIASES</code>。</p>
+<p>使用现有提供商作为模板：</p>
+<ul>
+<li class="">简单 API 密钥路径：Z.AI、MiniMax</li>
+<li class="">带端点检测的 API 密钥路径：Kimi、Z.AI</li>
+<li class="">原生令牌解析：Anthropic</li>
+<li class="">OAuth/认证存储路径：Nous、OpenAI Codex</li>
+</ul>
+<p>这里需要回答的问题：</p>
+<ul>
+<li class="">Hermes 应该检查哪些环境变量，优先级顺序是什么？</li>
+<li class="">提供商是否需要 base-URL 覆盖？</li>
+<li class="">它是否需要端点探测或令牌刷新？</li>
+<li class="">当凭据缺失时，认证错误应该说什么？</li>
+</ul>
+<p>如果提供商需要的不仅仅是&quot;查找 API 密钥&quot;，请添加专门的凭据解析器，而不是将逻辑塞进不相关的分支。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="步骤-3在-hermes_climodelspy-中添加模型目录和别名">步骤 3：在 <code>hermes_cli/models.py</code> 中添加模型目录和别名<a href="#步骤-3在-hermes_climodelspy-中添加模型目录和别名" class="hash-link" aria-label="步骤-3在-hermes_climodelspy-中添加模型目录和别名的直接链接" title="步骤-3在-hermes_climodelspy-中添加模型目录和别名的直接链接" translate="no">​</a></h2>
+<p>更新提供商目录，以便提供商在菜单和 <code>provider:model</code> 语法中工作。</p>
+<p>典型编辑：</p>
+<ul>
+<li class=""><code>_PROVIDER_MODELS</code></li>
+<li class=""><code>_PROVIDER_LABELS</code></li>
+<li class=""><code>_PROVIDER_ALIASES</code></li>
+<li class=""><code>list_available_providers()</code> 中的提供商显示顺序</li>
+<li class="">如果提供商支持实时 <code>/models</code> 获取，则使用 <code>provider_model_ids()</code></li>
+</ul>
+<p>如果提供商暴露实时模型列表，优先使用该功能，并将 <code>_PROVIDER_MODELS</code> 作为静态回退。</p>
+<p>这个文件还使以下输入能够工作：</p>
+<div class="language-text codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#F8F8F2;--prism-background-color:#282A36"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-text codeBlock_bY9V thin-scrollbar" style="color:#F8F8F2;background-color:#282A36"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#F8F8F2"><span class="token plain">anthropic:claude-sonnet-4-6</span><br></span><span class="token-line" style="color:#F8F8F2"><span class="token plain">kimi:model-name</span><br></span></code></pre></div></div>
+<p>如果这里缺少别名，提供商可能正确验证身份，但在 <code>/model</code> 解析中仍然失败。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="步骤-4在-hermes_cliruntime_providerpy-中解析运行时数据">步骤 4：在 <code>hermes_cli/runtime_provider.py</code> 中解析运行时数据<a href="#步骤-4在-hermes_cliruntime_providerpy-中解析运行时数据" class="hash-link" aria-label="步骤-4在-hermes_cliruntime_providerpy-中解析运行时数据的直接链接" title="步骤-4在-hermes_cliruntime_providerpy-中解析运行时数据的直接链接" translate="no">​</a></h2>
+<p><code>resolve_runtime_provider()</code> 是 CLI、网关、cron、ACP 和辅助客户端使用的共享路径。</p>
+<p>添加一个分支，返回至少包含以下内容的字典：</p>
+<div class="language-python codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#F8F8F2;--prism-background-color:#282A36"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-python codeBlock_bY9V thin-scrollbar" style="color:#F8F8F2;background-color:#282A36"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#F8F8F2"><span class="token punctuation" style="color:rgb(248, 248, 242)">{</span><span class="token plain"></span><br></span><span class="token-line" style="color:#F8F8F2"><span class="token plain">    </span><span class="token string" style="color:rgb(255, 121, 198)">&quot;provider&quot;</span><span class="token punctuation" style="color:rgb(248, 248, 242)">:</span><span class="token plain"> </span><span class="token string" style="color:rgb(255, 121, 198)">&quot;your-provider&quot;</span><span class="token punctuation" style="color:rgb(248, 248, 242)">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#F8F8F2"><span class="token plain">    </span><span class="token string" style="color:rgb(255, 121, 198)">&quot;api_mode&quot;</span><span class="token punctuation" style="color:rgb(248, 248, 242)">:</span><span class="token plain"> </span><span class="token string" style="color:rgb(255, 121, 198)">&quot;chat_completions&quot;</span><span class="token punctuation" style="color:rgb(248, 248, 242)">,</span><span class="token plain">  </span><span class="token comment" style="color:rgb(98, 114, 164)"># 或您的原生模式</span><span class="token plain"></span><br></span><span class="token-line" style="color:#F8F8F2"><span class="token plain">    </span><span class="token string" style="color:rgb(255, 121, 198)">&quot;base_url&quot;</span><span class="token punctuation" style="color:rgb(248, 248, 242)">:</span><span class="token plain"> </span><span class="token string" style="color:rgb(255, 121, 198)">&quot;https://...&quot;</span><span class="token punctuation" style="color:rgb(248, 248, 242)">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#F8F8F2"><span class="token plain">    </span><span class="token string" style="color:rgb(255, 121, 198)">&quot;api_key&quot;</span><span class="token punctuation" style="color:rgb(248, 248, 242)">:</span><span class="token plain"> </span><span class="token string" style="color:rgb(255, 121, 198)">&quot;...&quot;</span><span class="token punctuation" style="color:rgb(248, 248, 242)">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#F8F8F2"><span class="token plain">    </span><span class="token string" style="color:rgb(255, 121, 198)">&quot;source&quot;</span><span class="token punctuation" style="color:rgb(248, 248, 242)">:</span><span class="token plain"> </span><span class="token string" style="color:rgb(255, 121, 198)">&quot;env|portal|auth-store|explicit&quot;</span><span class="token punctuation" style="color:rgb(248, 248, 242)">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#F8F8F2"><span class="token plain">    </span><span class="token string" style="color:rgb(255, 121, 198)">&quot;requested_provider&quot;</span><span class="token punctuation" style="color:rgb(248, 248, 242)">:</span><span class="token plain"> requested_provider</span><span class="token punctuation" style="color:rgb(248, 248, 242)">,</span><span class="token plain"></span><br></span><span class="token-line" style="color:#F8F8F2"><span class="token plain"></span><span class="token punctuation" style="color:rgb(248, 248, 242)">}</span><br></span></code></pre></div></div>
+<p>如果提供商是 OpenAI 兼容的，<code>api_mode</code> 通常应该保持 <code>chat_completions</code>。</p>
+<p>小心 API 密钥优先级。Hermes 已经包含避免将 OpenRouter 密钥泄漏到无关端点的逻辑。新提供商应该同样明确哪个密钥对应哪个 base URL。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="步骤-5在-hermes_climainpy-中连接-cli">步骤 5：在 <code>hermes_cli/main.py</code> 中连接 CLI<a href="#步骤-5在-hermes_climainpy-中连接-cli" class="hash-link" aria-label="步骤-5在-hermes_climainpy-中连接-cli的直接链接" title="步骤-5在-hermes_climainpy-中连接-cli的直接链接" translate="no">​</a></h2>
+<p>提供商只有在出现在交互式 <code>hermes model</code> 流程中时才可被发现。</p>
+<p>在 <code>hermes_cli/main.py</code> 中更新这些：</p>
+<ul>
+<li class=""><code>provider_labels</code> 字典</li>
+<li class=""><code>select_provider_and_model()</code> 中的 <code>providers</code> 列表</li>
+<li class="">提供商分发（<code>if selected_provider == ...</code>）</li>
+<li class=""><code>--provider</code> 参数选项</li>
+<li class="">如果提供商支持这些流程，则添加 login/logout 选项</li>
+<li class=""><code>_model_flow_&lt;provider&gt;()</code> 函数，或如果适用则重用 <code>_model_flow_api_key_provider()</code></li>
+</ul>
+<div class="theme-admonition theme-admonition-tip admonition_xJq3 alert alert--success"><div class="admonitionHeading_Gvgb"><span class="admonitionIcon_Rf37"><svg viewBox="0 0 12 16"><path fill-rule="evenodd" d="M6.5 0C3.48 0 1 2.19 1 5c0 .92.55 2.25 1 3 1.34 2.25 1.78 2.78 2 4v1h5v-1c.22-1.22.66-1.75 2-4 .45-.75 1-2.08 1-3 0-2.81-2.48-5-5.5-5zm3.64 7.48c-.25.44-.47.8-.67 1.11-.86 1.41-1.25 2.06-1.45 3.23-.02.05-.02.11-.02.17H5c0-.06 0-.13-.02-.17-.2-1.17-.59-1.83-1.45-3.23-.2-.31-.42-.67-.67-1.11C2.44 6.78 2 5.65 2 5c0-2.2 2.02-4 4.5-4 1.22 0 2.36.42 3.22 1.19C10.55 2.94 11 3.94 11 5c0 .66-.44 1.78-.86 2.48zM4 14h5c-.23 1.14-1.3 2-2.5 2s-2.27-.86-2.5-2z"></path></svg></span>提示</div><div class="admonitionContent_BuS1"><p><code>hermes_cli/setup.py</code> 不需要更改 — 它调用 <code>main.py</code> 中的 <code>select_provider_and_model()</code>，因此您的新提供商会自动出现在 <code>hermes model</code> 和 <code>hermes setup</code> 中。</p></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="步骤-6保持辅助调用正常工作">步骤 6：保持辅助调用正常工作<a href="#步骤-6保持辅助调用正常工作" class="hash-link" aria-label="步骤 6：保持辅助调用正常工作的直接链接" title="步骤 6：保持辅助调用正常工作的直接链接" translate="no">​</a></h2>
+<p>这里涉及两个文件：</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="agentauxiliary_clientpy"><code>agent/auxiliary_client.py</code><a href="#agentauxiliary_clientpy" class="hash-link" aria-label="agentauxiliary_clientpy的直接链接" title="agentauxiliary_clientpy的直接链接" translate="no">​</a></h3>
+<p>如果这是一个直接 API 密钥提供商，请将便宜的/快速的默认辅助模型添加到 <code>_API_KEY_PROVIDER_AUX_MODELS</code>。</p>
+<p>辅助任务包括：</p>
+<ul>
+<li class="">视觉摘要</li>
+<li class="">网页抓取摘要</li>
+<li class="">上下文压缩摘要</li>
+<li class="">会话搜索摘要</li>
+<li class="">内存刷新</li>
+</ul>
+<p>如果提供商没有合理的辅助默认值，辅助任务可能会严重回退或意外使用昂贵的主模型。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="agentmodel_metadatapy"><code>agent/model_metadata.py</code><a href="#agentmodel_metadatapy" class="hash-link" aria-label="agentmodel_metadatapy的直接链接" title="agentmodel_metadatapy的直接链接" translate="no">​</a></h3>
+<p>添加提供商模型的上下文长度，以便 token 预算、压缩阈值和限制保持合理。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="步骤-7如果提供商是原生的添加适配器和-run_agentpy-支持">步骤 7：如果提供商是原生的，添加适配器和 <code>run_agent.py</code> 支持<a href="#步骤-7如果提供商是原生的添加适配器和-run_agentpy-支持" class="hash-link" aria-label="步骤-7如果提供商是原生的添加适配器和-run_agentpy-支持的直接链接" title="步骤-7如果提供商是原生的添加适配器和-run_agentpy-支持的直接链接" translate="no">​</a></h2>
+<p>如果提供商不是普通的 chat completions，请在 <code>agent/&lt;provider&gt;_adapter.py</code> 中隔离提供商特定的逻辑。</p>
+<p>保持 <code>run_agent.py</code> 专注于编排。它应该调用适配器帮助函数，而不是在文件中内联构建提供商负载。</p>
+<p>原生提供商通常需要在这些地方工作：</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="新适配器文件">新适配器文件<a href="#新适配器文件" class="hash-link" aria-label="新适配器文件的直接链接" title="新适配器文件的直接链接" translate="no">​</a></h3>
+<p>典型职责：</p>
+<ul>
+<li class="">构建 SDK / HTTP 客户端</li>
+<li class="">解析令牌</li>
+<li class="">将 OpenAI 风格的对话消息转换为提供商的请求格式</li>
+<li class="">如需要则转换工具模式</li>
+<li class="">将提供商响应规范化回 <code>run_agent.py</code> 期望的格式</li>
+<li class="">提取使用量和 finish-reason 数据</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="run_agentpy"><code>run_agent.py</code><a href="#run_agentpy" class="hash-link" aria-label="run_agentpy的直接链接" title="run_agentpy的直接链接" translate="no">​</a></h3>
+<p>搜索 <code>api_mode</code> 并审计每个切换点。至少验证：</p>
+<ul>
+<li class=""><code>__init__</code> 选择新的 <code>api_mode</code></li>
+<li class="">客户端构建适用于提供商</li>
+<li class=""><code>_build_api_kwargs()</code> 知道如何格式化请求</li>
+<li class=""><code>_api_call_with_interrupt()</code> 分发到正确的客户端调用</li>
+<li class="">interrupt / 客户端重建路径有效</li>
+<li class="">响应验证接受提供商的形状</li>
+<li class="">finish-reason 提取正确</li>
+<li class="">token 使用量提取正确</li>
+<li class="">备用模型激活可以干净地切换到新提供商</li>
+<li class="">摘要生成和内存刷新路径仍然有效</li>
+</ul>
+<p>还要在 <code>run_agent.py</code> 中搜索 <code>self.client.</code>。任何假设标准 OpenAI 客户端存在的代码路径都可能在使用不同客户端对象或 <code>self.client = None</code> 的原生提供商上崩溃。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="prompt-caching-and-provider-specific-request-fields">Prompt caching and provider-specific request fields<a href="#prompt-caching-and-provider-specific-request-fields" class="hash-link" aria-label="Prompt caching and provider-specific request fields的直接链接" title="Prompt caching and provider-specific request fields的直接链接" translate="no">​</a></h3>
+<p>Prompt caching and provider-specific knobs are easy to regress.</p>
+<p>树中已有的示例：</p>
+<ul>
+<li class="">Anthropic 有原生 prompt caching 路径</li>
+<li class="">OpenRouter 获取 provider-routing 字段</li>
+<li class="">不是每个提供商都应该接收每个请求端选项</li>
+</ul>
+<p>添加原生提供商时，请仔细检查 Hermes 是否只发送该提供商实际理解的字段。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="步骤-8测试">步骤 8：测试<a href="#步骤-8测试" class="hash-link" aria-label="步骤 8：测试的直接链接" title="步骤 8：测试的直接链接" translate="no">​</a></h2>
+<p>至少触及保护提供商连接的测试。</p>
+<p>常见位置：</p>
+<ul>
+<li class=""><code>tests/test_runtime_provider_resolution.py</code></li>
+<li class=""><code>tests/test_cli_provider_resolution.py</code></li>
+<li class=""><code>tests/test_cli_model_command.py</code></li>
+<li class=""><code>tests/test_setup_model_selection.py</code></li>
+<li class=""><code>tests/test_provider_parity.py</code></li>
+<li class=""><code>tests/test_run_agent.py</code></li>
+<li class=""><code>tests/test_&lt;provider&gt;_adapter.py</code>（用于原生提供商）</li>
+</ul>
+<p>对于仅文档示例，确切的文件集可能不同。重点是覆盖：</p>
+<ul>
+<li class="">身份验证解析</li>
+<li class="">CLI 菜单 / 提供商选择</li>
+<li class="">运行时提供商解析</li>
+<li class="">智能体执行路径</li>
+<li class="">provider<!-- -->:model<!-- --> 解析</li>
+<li class="">任何特定于适配器的消息转换</li>
+</ul>
+<p>使用禁用 xdist 的方式运行测试：</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#F8F8F2;--prism-background-color:#282A36"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#F8F8F2;background-color:#282A36"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#F8F8F2"><span class="token builtin class-name" style="color:rgb(189, 147, 249)">source</span><span class="token plain"> venv/bin/activate</span><br></span><span class="token-line" style="color:#F8F8F2"><span class="token plain">python </span><span class="token parameter variable" style="color:rgb(189, 147, 249);font-style:italic">-m</span><span class="token plain"> pytest tests/test_runtime_provider_resolution.py tests/test_cli_provider_resolution.py tests/test_cli_model_command.py tests/test_setup_model_selection.py </span><span class="token parameter variable" style="color:rgb(189, 147, 249);font-style:italic">-n0</span><span class="token plain"> </span><span class="token parameter variable" style="color:rgb(189, 147, 249);font-style:italic">-q</span><br></span></code></pre></div></div>
+<p>对于更深层的更改，在推送前运行完整套件：</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#F8F8F2;--prism-background-color:#282A36"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#F8F8F2;background-color:#282A36"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#F8F8F2"><span class="token builtin class-name" style="color:rgb(189, 147, 249)">source</span><span class="token plain"> venv/bin/activate</span><br></span><span class="token-line" style="color:#F8F8F2"><span class="token plain">python </span><span class="token parameter variable" style="color:rgb(189, 147, 249);font-style:italic">-m</span><span class="token plain"> pytest tests/ </span><span class="token parameter variable" style="color:rgb(189, 147, 249);font-style:italic">-n0</span><span class="token plain"> </span><span class="token parameter variable" style="color:rgb(189, 147, 249);font-style:italic">-q</span><br></span></code></pre></div></div>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="步骤-9实时验证">步骤 9：实时验证<a href="#步骤-9实时验证" class="hash-link" aria-label="步骤 9：实时验证的直接链接" title="步骤 9：实时验证的直接链接" translate="no">​</a></h2>
+<p>测试后，运行真实的冒烟测试。</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#F8F8F2;--prism-background-color:#282A36"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#F8F8F2;background-color:#282A36"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#F8F8F2"><span class="token builtin class-name" style="color:rgb(189, 147, 249)">source</span><span class="token plain"> venv/bin/activate</span><br></span><span class="token-line" style="color:#F8F8F2"><span class="token plain">python </span><span class="token parameter variable" style="color:rgb(189, 147, 249);font-style:italic">-m</span><span class="token plain"> hermes_cli.main chat </span><span class="token parameter variable" style="color:rgb(189, 147, 249);font-style:italic">-q</span><span class="token plain"> </span><span class="token string" style="color:rgb(255, 121, 198)">&quot;Say hello&quot;</span><span class="token plain"> </span><span class="token parameter variable" style="color:rgb(189, 147, 249);font-style:italic">--provider</span><span class="token plain"> your-provider </span><span class="token parameter variable" style="color:rgb(189, 147, 249);font-style:italic">--model</span><span class="token plain"> your-model</span><br></span></code></pre></div></div>
+<p>如果您更改了菜单，也要测试交互式流程：</p>
+<div class="language-bash codeBlockContainer_Ckt0 theme-code-block" style="--prism-color:#F8F8F2;--prism-background-color:#282A36"><div class="codeBlockContent_QJqH"><pre tabindex="0" class="prism-code language-bash codeBlock_bY9V thin-scrollbar" style="color:#F8F8F2;background-color:#282A36"><code class="codeBlockLines_e6Vv"><span class="token-line" style="color:#F8F8F2"><span class="token builtin class-name" style="color:rgb(189, 147, 249)">source</span><span class="token plain"> venv/bin/activate</span><br></span><span class="token-line" style="color:#F8F8F2"><span class="token plain">python </span><span class="token parameter variable" style="color:rgb(189, 147, 249);font-style:italic">-m</span><span class="token plain"> hermes_cli.main model</span><br></span><span class="token-line" style="color:#F8F8F2"><span class="token plain">python </span><span class="token parameter variable" style="color:rgb(189, 147, 249);font-style:italic">-m</span><span class="token plain"> hermes_cli.main setup</span><br></span></code></pre></div></div>
+<p>对于原生提供商，也请验证至少一个工具调用，而不仅仅是纯文本响应。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="步骤-10更新面向用户的文档">步骤 10：更新面向用户的文档<a href="#步骤-10更新面向用户的文档" class="hash-link" aria-label="步骤 10：更新面向用户的文档的直接链接" title="步骤 10：更新面向用户的文档的直接链接" translate="no">​</a></h2>
+<p>如果该提供商是作为一级选项提供的，也要更新用户文档：</p>
+<ul>
+<li class=""><code>website/docs/getting-started/quickstart.md</code></li>
+<li class=""><code>website/docs/user-guide/configuration.md</code></li>
+<li class=""><code>website/docs/reference/environment-variables.md</code></li>
+</ul>
+<p>开发者可以完美地连接提供商，但仍然可能使用户无法发现所需的环境变量或设置流程。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="openai-兼容提供商检查清单">OpenAI 兼容提供商检查清单<a href="#openai-兼容提供商检查清单" class="hash-link" aria-label="OpenAI 兼容提供商检查清单的直接链接" title="OpenAI 兼容提供商检查清单的直接链接" translate="no">​</a></h2>
+<p>如果提供商是标准 chat completions，请使用此清单。</p>
+<ul class="contains-task-list containsTaskList_mC6p">
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->在 <code>hermes_cli/auth.py</code> 中添加了 <code>ProviderConfig</code></li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->在 <code>hermes_cli/auth.py</code> 和 <code>hermes_cli/models.py</code> 中添加了别名</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->在 <code>hermes_cli/models.py</code> 中添加了模型目录</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->在 <code>hermes_cli/runtime_provider.py</code> 中添加了运行时分支</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->在 <code>hermes_cli/main.py</code> 中添加了 CLI 连接（setup.py 自动继承）</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->在 <code>agent/auxiliary_client.py</code> 中添加了辅助模型</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->在 <code>agent/model_metadata.py</code> 中添加了上下文长度</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->更新了运行时 / CLI 测试</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->更新了用户文档</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="原生提供商检查清单">原生提供商检查清单<a href="#原生提供商检查清单" class="hash-link" aria-label="原生提供商检查清单的直接链接" title="原生提供商检查清单的直接链接" translate="no">​</a></h2>
+<p>当提供商需要新的协议路径时使用此清单。</p>
+<ul class="contains-task-list containsTaskList_mC6p">
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->OpenAI 兼容检查清单中的所有内容</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->在 <code>agent/&lt;provider&gt;_adapter.py</code> 中添加了适配器</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->在 <code>run_agent.py</code> 中支持了新的 <code>api_mode</code></li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->interrupt / 重建路径有效</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->使用量和 finish-reason 提取有效</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->备用路径有效</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->添加了适配器测试</li>
+<li class="task-list-item"><input type="checkbox" disabled=""> <!-- -->实时冒烟测试通过</li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="常见陷阱">常见陷阱<a href="#常见陷阱" class="hash-link" aria-label="常见陷阱的直接链接" title="常见陷阱的直接链接" translate="no">​</a></h2>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="1-将提供商添加到身份验证但未添加到模型解析">1. 将提供商添加到身份验证但未添加到模型解析<a href="#1-将提供商添加到身份验证但未添加到模型解析" class="hash-link" aria-label="1. 将提供商添加到身份验证但未添加到模型解析的直接链接" title="1. 将提供商添加到身份验证但未添加到模型解析的直接链接" translate="no">​</a></h3>
+<p>这会使凭据正确解析，而 <code>/model</code> 和 <code>provider:model</code> 输入失败。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="2-忘记-configmodel-可以是字符串或字典">2. 忘记 <code>config[&quot;model&quot;]</code> 可以是字符串或字典<a href="#2-忘记-configmodel-可以是字符串或字典" class="hash-link" aria-label="2-忘记-configmodel-可以是字符串或字典的直接链接" title="2-忘记-configmodel-可以是字符串或字典的直接链接" translate="no">​</a></h3>
+<p>很多提供商选择代码必须规范化这两种形式。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="3-假设必须使用内置提供商">3. 假设必须使用内置提供商<a href="#3-假设必须使用内置提供商" class="hash-link" aria-label="3. 假设必须使用内置提供商的直接链接" title="3. 假设必须使用内置提供商的直接链接" translate="no">​</a></h3>
+<p>如果服务只是 OpenAI 兼容的，自定义提供商可能已经以更少的维护解决了用户问题。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="4-忘记辅助路径">4. 忘记辅助路径<a href="#4-忘记辅助路径" class="hash-link" aria-label="4. 忘记辅助路径的直接链接" title="4. 忘记辅助路径的直接链接" translate="no">​</a></h3>
+<p>主聊天路径可以工作，而摘要、内存刷新或视觉助手失败，因为辅助路由从未更新。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="5-原生提供商分支隐藏在-run_agentpy-中">5. 原生提供商分支隐藏在 <code>run_agent.py</code> 中<a href="#5-原生提供商分支隐藏在-run_agentpy-中" class="hash-link" aria-label="5-原生提供商分支隐藏在-run_agentpy-中的直接链接" title="5-原生提供商分支隐藏在-run_agentpy-中的直接链接" translate="no">​</a></h3>
+<p>搜索 <code>api_mode</code> 和 <code>self.client.</code>。不要假设明显的请求路径是唯一的路径。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="6-将仅-openrouter-的旋钮发送到其他提供商">6. 将仅 OpenRouter 的旋钮发送到其他提供商<a href="#6-将仅-openrouter-的旋钮发送到其他提供商" class="hash-link" aria-label="6. 将仅 OpenRouter 的旋钮发送到其他提供商的直接链接" title="6. 将仅 OpenRouter 的旋钮发送到其他提供商的直接链接" translate="no">​</a></h3>
+<p>provider routing 等字段仅适用于支持它们的提供商。</p>
+<h3 class="anchor anchorTargetStickyNavbar_Vzrq" id="7-更新了-hermes-model-但没有更新-hermes-setup">7. 更新了 <code>hermes model</code> 但没有更新 <code>hermes setup</code><a href="#7-更新了-hermes-model-但没有更新-hermes-setup" class="hash-link" aria-label="7-更新了-hermes-model-但没有更新-hermes-setup的直接链接" title="7-更新了-hermes-model-但没有更新-hermes-setup的直接链接" translate="no">​</a></h3>
+<p>两个流程都需要了解该提供商。</p>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="实现时的好搜索目标">实现时的好搜索目标<a href="#实现时的好搜索目标" class="hash-link" aria-label="实现时的好搜索目标的直接链接" title="实现时的好搜索目标的直接链接" translate="no">​</a></h2>
+<p>如果您在寻找提供商涉及的所有地方，请搜索这些符号：</p>
+<ul>
+<li class=""><code>PROVIDER_REGISTRY</code></li>
+<li class=""><code>_PROVIDER_ALIASES</code></li>
+<li class=""><code>_PROVIDER_MODELS</code></li>
+<li class=""><code>resolve_runtime_provider</code></li>
+<li class=""><code>_model_flow_</code></li>
+<li class=""><code>select_provider_and_model</code></li>
+<li class=""><code>api_mode</code></li>
+<li class=""><code>_API_KEY_PROVIDER_AUX_MODELS</code></li>
+<li class=""><code>self.client.</code></li>
+</ul>
+<h2 class="anchor anchorTargetStickyNavbar_Vzrq" id="相关文档">相关文档<a href="#相关文档" class="hash-link" aria-label="相关文档的直接链接" title="相关文档的直接链接" translate="no">​</a></h2>
+<ul>
+<li class=""><a class="" href="/docs/zh-Hans/developer-guide/provider-runtime">提供商运行时解析</a></li>
+<li class=""><a class="" href="/docs/zh-Hans/developer-guide/architecture">架构</a></li>
+<li class=""><a class="" href="/docs/zh-Hans/developer-guide/contributing">贡献</a></li>
+</ul></div><footer class="theme-doc-footer docusaurus-mt-lg"><div class="row margin-top--sm theme-doc-footer-edit-meta-row"><div class="col noPrint_WFHX"><a href="https://github.com/NousResearch/hermes-agent/edit/main/website/docs/developer-guide/adding-providers.md" target="_blank" rel="noopener noreferrer" class="theme-edit-this-page"><svg fill="currentColor" height="20" width="20" viewBox="0 0 40 40" class="iconEdit_Z9Sw" aria-hidden="true"><g><path d="m34.5 11.7l-3 3.1-6.3-6.3 3.1-3q0.5-0.5 1.2-0.5t1.1 0.5l3.9 3.9q0.5 0.4 0.5 1.1t-0.5 1.2z m-29.5 17.1l18.4-18.5 6.3 6.3-18.4 18.4h-6.3v-6.2z"></path></g></svg>编辑此页</a></div><div class="col lastUpdated_JAkA"></div></div></footer></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="文件选项卡"><a class="pagination-nav__link pagination-nav__link--prev" href="/docs/zh-Hans/developer-guide/adding-tools"><div class="pagination-nav__sublabel">上一页</div><div class="pagination-nav__label">添加工具</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/docs/zh-Hans/developer-guide/adding-platform-adapters"><div class="pagination-nav__sublabel">下一页</div><div class="pagination-nav__label">添加平台适配器</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_bqdL thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#心智模型" class="table-of-contents__link toc-highlight">心智模型</a></li><li><a href="#首先选择实现路径" class="table-of-contents__link toc-highlight">首先选择实现路径</a><ul><li><a href="#路径-a--openai-兼容提供商" class="table-of-contents__link toc-highlight">路径 A — OpenAI 兼容提供商</a></li><li><a href="#path-b--native-provider" class="table-of-contents__link toc-highlight">Path B — Native provider</a></li></ul></li><li><a href="#文件检查清单" class="table-of-contents__link toc-highlight">文件检查清单</a><ul><li><a href="#每个内置提供商都需要" class="table-of-contents__link toc-highlight">每个内置提供商都需要</a></li><li><a href="#额外的原生非-openai-提供商" class="table-of-contents__link toc-highlight">额外的原生/非 OpenAI 提供商</a></li></ul></li><li><a href="#步骤-1选择一个规范的提供商-id" class="table-of-contents__link toc-highlight">步骤 1：选择一个规范的提供商 ID</a></li><li><a href="#步骤-2在-hermes_cliauthpy-中添加认证元数据" class="table-of-contents__link toc-highlight">步骤 2：在 <code>hermes_cli/auth.py</code> 中添加认证元数据</a></li><li><a href="#步骤-3在-hermes_climodelspy-中添加模型目录和别名" class="table-of-contents__link toc-highlight">步骤 3：在 <code>hermes_cli/models.py</code> 中添加模型目录和别名</a></li><li><a href="#步骤-4在-hermes_cliruntime_providerpy-中解析运行时数据" class="table-of-contents__link toc-highlight">步骤 4：在 <code>hermes_cli/runtime_provider.py</code> 中解析运行时数据</a></li><li><a href="#步骤-5在-hermes_climainpy-中连接-cli" class="table-of-contents__link toc-highlight">步骤 5：在 <code>hermes_cli/main.py</code> 中连接 CLI</a></li><li><a href="#步骤-6保持辅助调用正常工作" class="table-of-contents__link toc-highlight">步骤 6：保持辅助调用正常工作</a><ul><li><a href="#agentauxiliary_clientpy" class="table-of-contents__link toc-highlight"><code>agent/auxiliary_client.py</code></a></li><li><a href="#agentmodel_metadatapy" class="table-of-contents__link toc-highlight"><code>agent/model_metadata.py</code></a></li></ul></li><li><a href="#步骤-7如果提供商是原生的添加适配器和-run_agentpy-支持" class="table-of-contents__link toc-highlight">步骤 7：如果提供商是原生的，添加适配器和 <code>run_agent.py</code> 支持</a><ul><li><a href="#新适配器文件" class="table-of-contents__link toc-highlight">新适配器文件</a></li><li><a href="#run_agentpy" class="table-of-contents__link toc-highlight"><code>run_agent.py</code></a></li><li><a href="#prompt-caching-and-provider-specific-request-fields" class="table-of-contents__link toc-highlight">Prompt caching and provider-specific request fields</a></li></ul></li><li><a href="#步骤-8测试" class="table-of-contents__link toc-highlight">步骤 8：测试</a></li><li><a href="#步骤-9实时验证" class="table-of-contents__link toc-highlight">步骤 9：实时验证</a></li><li><a href="#步骤-10更新面向用户的文档" class="table-of-contents__link toc-highlight">步骤 10：更新面向用户的文档</a></li><li><a href="#openai-兼容提供商检查清单" class="table-of-contents__link toc-highlight">OpenAI 兼容提供商检查清单</a></li><li><a href="#原生提供商检查清单" class="table-of-contents__link toc-highlight">原生提供商检查清单</a></li><li><a href="#常见陷阱" class="table-of-contents__link toc-highlight">常见陷阱</a><ul><li><a href="#1-将提供商添加到身份验证但未添加到模型解析" class="table-of-contents__link toc-highlight">1. 将提供商添加到身份验证但未添加到模型解析</a></li><li><a href="#2-忘记-configmodel-可以是字符串或字典" class="table-of-contents__link toc-highlight">2. 忘记 <code>config[&quot;model&quot;]</code> 可以是字符串或字典</a></li><li><a href="#3-假设必须使用内置提供商" class="table-of-contents__link toc-highlight">3. 假设必须使用内置提供商</a></li><li><a href="#4-忘记辅助路径" class="table-of-contents__link toc-highlight">4. 忘记辅助路径</a></li><li><a href="#5-原生提供商分支隐藏在-run_agentpy-中" class="table-of-contents__link toc-highlight">5. 原生提供商分支隐藏在 <code>run_agent.py</code> 中</a></li><li><a href="#6-将仅-openrouter-的旋钮发送到其他提供商" class="table-of-contents__link toc-highlight">6. 将仅 OpenRouter 的旋钮发送到其他提供商</a></li><li><a href="#7-更新了-hermes-model-但没有更新-hermes-setup" class="table-of-contents__link toc-highlight">7. 更新了 <code>hermes model</code> 但没有更新 <code>hermes setup</code></a></li></ul></li><li><a href="#实现时的好搜索目标" class="table-of-contents__link toc-highlight">实现时的好搜索目标</a></li><li><a href="#相关文档" class="table-of-contents__link toc-highlight">相关文档</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="row footer__links"><div class="theme-layout-footer-column col footer__col"><div class="footer__title">文档</div><ul class="footer__items clean-list"><li class="footer__item"><a class="footer__link-item" href="/docs/zh-Hans/getting-started/quickstart">开始使用</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/zh-Hans/user-guide/cli">用户指南</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/zh-Hans/developer-guide/architecture">开发者指南</a></li><li class="footer__item"><a class="footer__link-item" href="/docs/zh-Hans/reference/cli-commands">参考</a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">社区</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://discord.gg/NousResearch" target="_blank" rel="noopener noreferrer" class="footer__link-item">Discord<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://github.com/NousResearch/hermes-agent/discussions" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub 讨论<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://agentskills.io" target="_blank" rel="noopener noreferrer" class="footer__link-item">技能中心<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div><div class="theme-layout-footer-column col footer__col"><div class="footer__title">更多</div><ul class="footer__items clean-list"><li class="footer__item"><a href="https://github.com/NousResearch/hermes-agent" target="_blank" rel="noopener noreferrer" class="footer__link-item">GitHub<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li><li class="footer__item"><a href="https://nousresearch.com" target="_blank" rel="noopener noreferrer" class="footer__link-item">Nous Research<svg width="13.5" height="13.5" aria-label="(opens in new tab)" class="iconExternalLink_nPIU"><use href="#theme-svg-external-link"></use></svg></a></li></ul></div></div><div class="footer__bottom text--center"><div class="footer__copyright">由 <a href="https://nousresearch.com">Nous Research</a> 构建 · MIT 许可证 · 2026</div></div></div></footer></div>
+</body>
+</html>
